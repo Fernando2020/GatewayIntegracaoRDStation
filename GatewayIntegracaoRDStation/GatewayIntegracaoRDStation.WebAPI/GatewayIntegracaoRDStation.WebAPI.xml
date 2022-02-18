@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GatewayIntegracaoRDStation.WebAPI</name>
+    </assembly>
+    <members>
+        <member name="T:GatewayIntegracaoRDStation.WebAPI.Controllers.CustomerController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.CustomerController.GetBy(GatewayIntegracaoRDStation.Core.ValueObjects.Customers.GetByCustomerFilterRequest)">
+            <summary>
+            Get list of customers
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.CustomerController.GetById(System.Int32)">
+            <summary>
+            Get customer with contact list
+            </summary>
+        </member>
+        <member name="T:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions.AddMyServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:GatewayIntegracaoRDStation.WebAPI.Program">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Program.Main(System.String[])">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:GatewayIntegracaoRDStation.WebAPI.Startup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:GatewayIntegracaoRDStation.WebAPI.Startup.Configuration">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+        </member>
+    </members>
+</doc>
