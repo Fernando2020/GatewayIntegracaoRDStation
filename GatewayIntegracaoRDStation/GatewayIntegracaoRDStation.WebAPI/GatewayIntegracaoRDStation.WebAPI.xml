@@ -19,6 +19,16 @@
             Get customer with contact list
             </summary>
         </member>
+        <member name="T:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.EventPost(GatewayIntegracaoRDStation.Core.ValueObjects.Events.PostEventRequest)">
+            <summary>
+            Event
+            </summary>
+        </member>
         <member name="T:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions">
             <summary>
             

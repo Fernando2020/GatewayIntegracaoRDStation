@@ -6,7 +6,7 @@ namespace GatewayIntegracaoRDStation.Application
     /// <summary>
     /// Provides all services available for use in this project
     /// </summary>
-    public class FacadeService
+    public abstract class FacadeService
     {
         #region [ Services ]
         /// <summary>
@@ -15,6 +15,13 @@ namespace GatewayIntegracaoRDStation.Application
         public static ICustomerService CustomerService
         {
             get { return ServiceProviderHelper.GetService<ICustomerService>(); }
+        }
+        /// <summary>
+        /// <see cref="GatewayIntegracaoRDStation.Core.Contract.Logic.IEventService"/>
+        /// </summary>
+        public static IEventService EventService
+        {
+            get { return ServiceProviderHelper.GetService<IEventService>(); }
         }
         #endregion
     }

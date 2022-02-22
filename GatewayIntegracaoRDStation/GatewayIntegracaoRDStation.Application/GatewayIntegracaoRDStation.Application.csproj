@@ -14,4 +14,8 @@
 		<ProjectReference Include="..\GatewayIntegracaoRDStation.Core\GatewayIntegracaoRDStation.Core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Pipe\Operations\Events\" />
+	</ItemGroup>
+
 </Project>
