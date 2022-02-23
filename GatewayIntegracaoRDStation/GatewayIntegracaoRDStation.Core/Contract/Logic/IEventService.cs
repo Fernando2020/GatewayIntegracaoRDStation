@@ -9,6 +9,6 @@ namespace GatewayIntegracaoRDStation.Core.Contract.Logic
     /// </summary>
     public interface IEventService
     {
-        Task<IBusinessResult<PostEventResponse>> PostEvent(PostEventRequest postEventRequest);
+        Task<IBusinessResult<PostEventResponse>> PostEvents<T>(PostEventRequest<T> postEventRequest);
     }
 }

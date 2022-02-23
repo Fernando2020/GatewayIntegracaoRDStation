@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GatewayIntegracaoRDStation.Core.ValueObjects.Events
 {
     public class ValidationRulesResponse
     {
-        [JsonPropertyName("valid_options")]
+        [JsonProperty("valid_options")]
         public List<string> ValidOptions { get; set; }
     }
 }

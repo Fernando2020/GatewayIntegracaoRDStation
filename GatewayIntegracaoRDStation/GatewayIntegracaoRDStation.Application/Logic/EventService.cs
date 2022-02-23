@@ -32,25 +32,18 @@ namespace GatewayIntegracaoRDStation.Application.Logic
         #endregion
 
         #region [ Actions ]
-        public async Task<IBusinessResult<PostEventResponse>> PostEvent(PostEventRequest postEventRequest)
+        public async Task<IBusinessResult<PostEventResponse>> PostEvents<T>(PostEventRequest<T> postEventRequest)
         {
-            // note: IGetByCustomerBuilder can be injected through class constructor as class member
-
-            // add operations/steps with IGetByCustomerBuilder builder
             ServiceProviderHelper.GetService<IPostEventBuilder>()
                 ?.Builder(pipeline);
 
-            // run pipeline with package with content (int -> id)
-            await pipeline.ExecuteAsync(postEventRequest.ToMessage());
+            await pipeline.ExecuteAsync(postEventRequest.Data.ToMessage("data"));
 
-            // try to get response content
             PostEventResponse result = pipeline.GetMessage()
                 .GetContent<PostEventResponse>();
 
-            // checks if there are any records
-            if (result != null)
+            if (result == null)
             {
-                // reply with standard message for record not found
                 return Messages.RECORD_NOT_FOUND
                     .ToMessageResult(MessageType.Error)
                         .ToBusiness<PostEventResponse>();

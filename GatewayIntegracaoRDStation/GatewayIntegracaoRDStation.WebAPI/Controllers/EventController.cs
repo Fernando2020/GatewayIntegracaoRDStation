@@ -1,6 +1,8 @@
 ﻿using GatewayIntegracaoRDStation.Application;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Customers;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Events;
+using GatewayIntegracaoRDStation.Core.ValueObjects.Events.CartAbandonment;
+using GatewayIntegracaoRDStation.Core.ValueObjects.Events.Conversion;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mvp24Hours.Core.Contract.ValueObjects.Logic;
@@ -21,26 +23,43 @@ namespace GatewayIntegracaoRDStation.WebAPI.Controllers
         #region [ Actions / Resources ]
 
         /// <summary>
-        /// Event
+        /// Evento de conversão
         /// </summary>
-        [HttpPost]
+        [HttpPost("PostConversion")]
         [ProducesResponseType(typeof(ActionResult<IBusinessResult<PostEventResponse>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ActionResult<IBusinessResult<PostEventResponse>>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ActionResult<IBusinessResult<PostEventResponse>>), StatusCodes.Status400BadRequest)]
-        [Route("", Name = "EventPost")]
-        public async Task<ActionResult<IBusinessResult<PostEventResponse>>> EventPost(PostEventRequest postEventRequest)
+        public async Task<ActionResult<IBusinessResult<PostEventResponse>>> Conversion(PostConversionRequest postConversionRequest)
         {
-            var result = await FacadeService.EventService.PostEvent(postEventRequest);
-            // checks for failure in the notification context
+            var request = new PostEventRequest<PostConversionRequest>(postConversionRequest);
+
+            var result = await FacadeService.EventService.PostEvents(request);
+
             if (NotificationContext.HasErrorNotifications)
             {
                 return BadRequest(NotificationContext.ToBusiness<GetByIdCustomerResponse>());
             }
-            else if (result.HasData())
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Evento de abandono de carrinho
+        /// </summary>
+        [HttpPost("PostCartAbandonment")]
+        [ProducesResponseType(typeof(ActionResult<IBusinessResult<PostEventResponse>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ActionResult<IBusinessResult<PostEventResponse>>), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IBusinessResult<PostEventResponse>>> CartAbandonment(PostCartAbandonmentRequest postCartAbandonmentRequest)
+        {
+            var request = new PostEventRequest<PostCartAbandonmentRequest>(postCartAbandonmentRequest);
+
+            var result = await FacadeService.EventService.PostEvents(request);
+
+            if (NotificationContext.HasErrorNotifications)
             {
-                return Ok(result);
+                return BadRequest(NotificationContext.ToBusiness<GetByIdCustomerResponse>());
             }
-            return NotFound(result);
+                
+            return Ok(result);
         }
 
         #endregion
