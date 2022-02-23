@@ -24,9 +24,14 @@
             
             </summary>
         </member>
-        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.EventPost(GatewayIntegracaoRDStation.Core.ValueObjects.Events.PostEventRequest)">
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.Conversion(GatewayIntegracaoRDStation.Core.ValueObjects.Events.Conversion.PostConversionRequest)">
             <summary>
-            Event
+            Evento de conversão
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.CartAbandonment(GatewayIntegracaoRDStation.Core.ValueObjects.Events.CartAbandonment.PostCartAbandonmentRequest)">
+            <summary>
+            Evento de abandono de carrinho
             </summary>
         </member>
         <member name="T:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions">
