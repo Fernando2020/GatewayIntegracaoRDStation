@@ -4,21 +4,6 @@
         <name>GatewayIntegracaoRDStation.WebAPI</name>
     </assembly>
     <members>
-        <member name="T:GatewayIntegracaoRDStation.WebAPI.Controllers.CustomerController">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.CustomerController.GetBy(GatewayIntegracaoRDStation.Core.ValueObjects.Customers.GetByCustomerFilterRequest)">
-            <summary>
-            Get list of customers
-            </summary>
-        </member>
-        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.CustomerController.GetById(System.Int32)">
-            <summary>
-            Get customer with contact list
-            </summary>
-        </member>
         <member name="T:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController">
             <summary>
             
