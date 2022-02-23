@@ -1,16 +1,16 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace GatewayIntegracaoRDStation.Core.ValueObjects.Events
 {
     public class LegalBasesRequest
     {
-        [JsonPropertyName("category")]
+        [JsonProperty("category")]
         public string Category { get; set; }
 
-        [JsonPropertyName("type")]
+        [JsonProperty("type")]
         public string Type { get; set; }
 
-        [JsonPropertyName("status")]
+        [JsonProperty("status")]
         public string Status { get; set; }
     }
 }

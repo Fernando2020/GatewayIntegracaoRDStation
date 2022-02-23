@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GatewayIntegracaoRDStation.Core.ValueObjects.Events
 {
     public class PostEventResponse
     {
-        [JsonPropertyName("event_uuid")]
+        [JsonProperty("event_uuid")]
         public string EventId { get; set; }
 
-        [JsonPropertyName("errors")]
-        public List<ErrorResponse> ErrorsResponse { get; set; }
+        [JsonProperty("errors")]
+        public List<ErrorEventResponse> Errors { get; set; }
     }
 }
