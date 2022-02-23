@@ -1,5 +1,4 @@
 ﻿using GatewayIntegracaoRDStation.Application;
-using GatewayIntegracaoRDStation.Core.ValueObjects.Customers;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Events;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Events.CartAbandonment;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Events.Conversion;
@@ -36,7 +35,7 @@ namespace GatewayIntegracaoRDStation.WebAPI.Controllers
 
             if (NotificationContext.HasErrorNotifications)
             {
-                return BadRequest(NotificationContext.ToBusiness<GetByIdCustomerResponse>());
+                return BadRequest(NotificationContext.ToBusiness<PostEventResponse>());
             }
 
             return Ok(result);
@@ -56,7 +55,7 @@ namespace GatewayIntegracaoRDStation.WebAPI.Controllers
 
             if (NotificationContext.HasErrorNotifications)
             {
-                return BadRequest(NotificationContext.ToBusiness<GetByIdCustomerResponse>());
+                return BadRequest(NotificationContext.ToBusiness<PostEventResponse>());
             }
                 
             return Ok(result);

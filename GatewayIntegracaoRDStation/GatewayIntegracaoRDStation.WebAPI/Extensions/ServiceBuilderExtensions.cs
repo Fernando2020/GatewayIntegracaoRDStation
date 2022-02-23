@@ -16,12 +16,9 @@ namespace GatewayIntegracaoRDStation.WebAPI.Extensions
         /// </summary>
         public static IServiceCollection AddMyServices(this IServiceCollection services)
         {
-            services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IEventService, EventService>();
 
             // pipeline - builders
-            services.AddScoped<IGetByCustomerBuilder, GetByCustomerBuilder>();
-            services.AddScoped<IGetByIdCustomerBuilder, GetByIdCustomerBuilder>();
             services.AddScoped<IPostEventBuilder, PostEventBuilder>();
 
             return services;

@@ -15,9 +15,9 @@ namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Authentications
             // Banco de dados ?
             return new AccessTokenResponse
             {
-                AccessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5yZC5zZXJ2aWNlcyIsInN1YiI6IkRHRkJLSURDRm9oc2IwMnllc3BDOU5MdEtnLXhmeGtQRm1pX1B5cGNVV1FAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vYXBwLnJkc3RhdGlvbi5jb20uYnIvYXBpL3YyLyIsImFwcF9uYW1lIjoiRWNvbW1lcmNlIFR1cmlzbW8iLCJleHAiOjE2NDU3MDgxMjMsImlhdCI6MTY0NTYyMTcyMywic2NvcGUiOiIifQ.oxsjrZyw1-my_bjRcPklAzGZQmgvorssOZuxUSwVKdgEpsbM7Gh2igkiMKsPHXiLDoc-q4oWKpjZjlj1jPNVzcLLUncO6NSn6-1J8oPduNNJPzKH4fNTS1GUIg61oFeXqW-WrvQ0h8z2oDopU_LAKsFjsjo9K4WbXlmBn4OW4VHfvQYE7PdDwu2PVQ0VUPuqYz3ph2JCYYv57c77Lejz8bdBGBCmQz89uu3GEw48Oj6fYa830hWnO9VWAXSHQP0EffzQt81ztLFuodLgCe0ZmTt9O2WFR-8PMJFSL61XDvFY_o4oF-kCx-0URoOWDfnYdYZkUjDK3KVcrPwPsbgz2Q",
+                AccessToken = "",
                 ExpiresIn = 86400,
-                RefreshToken = "iZhfZM0cqtyb09icTjUibnZxo2Re0T3bHXUr5yu8nA94"
+                RefreshToken = ""
             };
         }
 

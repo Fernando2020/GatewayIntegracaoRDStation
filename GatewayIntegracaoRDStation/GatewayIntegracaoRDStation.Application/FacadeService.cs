@@ -10,13 +10,6 @@ namespace GatewayIntegracaoRDStation.Application
     {
         #region [ Services ]
         /// <summary>
-        /// <see cref="GatewayIntegracaoRDStation.Core.Contract.Logic.ICustomerService"/>
-        /// </summary>
-        public static ICustomerService CustomerService
-        {
-            get { return ServiceProviderHelper.GetService<ICustomerService>(); }
-        }
-        /// <summary>
         /// <see cref="GatewayIntegracaoRDStation.Core.Contract.Logic.IEventService"/>
         /// </summary>
         public static IEventService EventService
