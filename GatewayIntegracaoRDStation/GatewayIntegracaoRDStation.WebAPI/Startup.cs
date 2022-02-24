@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using GatewayIntegracaoRDStation.WebAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,9 +43,10 @@ namespace GatewayIntegracaoRDStation.WebAPI
             #endregion
 
             services.AddMyServices();
+            services.AddValidation();
 
             services.AddControllers();
-            services.AddMvc();
+            services.AddMvc().AddFluentValidation();
         }
 
         /// <summary>

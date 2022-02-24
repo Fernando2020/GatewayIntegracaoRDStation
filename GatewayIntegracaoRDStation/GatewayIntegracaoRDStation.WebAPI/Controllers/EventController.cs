@@ -38,6 +38,11 @@ namespace GatewayIntegracaoRDStation.WebAPI.Controllers
                 return BadRequest(NotificationContext.ToBusiness<PostEventResponse>());
             }
 
+            if (result.Data.Errors.AnyOrNotNull())
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
 
@@ -57,7 +62,12 @@ namespace GatewayIntegracaoRDStation.WebAPI.Controllers
             {
                 return BadRequest(NotificationContext.ToBusiness<PostEventResponse>());
             }
-                
+
+            if (result.Data.Errors.AnyOrNotNull())
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
 
