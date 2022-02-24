@@ -29,6 +29,16 @@
             
             </summary>
         </member>
+        <member name="T:GatewayIntegracaoRDStation.WebAPI.Extensions.ValidationBuilderExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Extensions.ValidationBuilderExtensions.AddValidation(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:GatewayIntegracaoRDStation.WebAPI.Program">
             <summary>
             
