@@ -1,5 +1,4 @@
 ﻿using GatewayIntegracaoRDStation.Core.Resources;
-using GatewayIntegracaoRDStation.Core.ValueObjects.Authentication;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Events;
 using Mvp24Hours.Core.Contract.Infrastructure.Pipe;
 using Mvp24Hours.Extensions;
@@ -25,9 +24,9 @@ namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Events
                 input.Messages.AddMessage("data", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
             }
 
-            if (!input.HasContent("accessTokenResponse"))
+            if (!input.HasContent("accessToken"))
             {
-                input.Messages.AddMessage("accessTokenResponse", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
+                input.Messages.AddMessage("accessToken", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
             }
 
             if (input.IsFaulty)
@@ -37,10 +36,9 @@ namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Events
 
             var urlBase = input.GetContent<string>("urlBase");
             var data = input.GetContent<object>("data");
+            var accessToken = input.GetContent<string>("accessToken");
 
-            var accessTokenResponse = input.GetContent<AccessTokenResponse>("accessTokenResponse");
-
-            var header = new Hashtable(); header.Add("Authorization", $"Bearer {accessTokenResponse.AccessToken}");
+            var header = new Hashtable(); header.Add("Authorization", $"Bearer {accessToken}");
 
             var json = JsonConvert.SerializeObject(data, new JsonSerializerSettings
             {

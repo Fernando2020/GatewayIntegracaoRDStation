@@ -19,6 +19,9 @@ namespace GatewayIntegracaoRDStation.Core.Validators.Events.CartAbandonment
 
             RuleFor(x => x.CfCartStatus)
                 .NotNull().NotEmpty();
+
+            RuleForEach(x => x.LegalBases)
+                .SetValidator(new LegalBasesRequestValidator());
         }
     }
 }

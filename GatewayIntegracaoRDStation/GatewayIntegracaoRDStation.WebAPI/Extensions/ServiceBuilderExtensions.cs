@@ -4,8 +4,10 @@ using GatewayIntegracaoRDStation.Application.Pipe.Builders;
 using GatewayIntegracaoRDStation.Application.Pipe.Operations.Authentications;
 using GatewayIntegracaoRDStation.Core.Contract.Logic;
 using GatewayIntegracaoRDStation.Core.Contract.Pipe.Builders;
+using GatewayIntegracaoRDStation.Core.Validators.Events;
 using GatewayIntegracaoRDStation.Core.Validators.Events.CartAbandonment;
 using GatewayIntegracaoRDStation.Core.Validators.Events.Conversion;
+using GatewayIntegracaoRDStation.Core.ValueObjects.Events;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Events.CartAbandonment;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Events.Conversion;
 using Microsoft.Extensions.Caching.Distributed;
@@ -50,6 +52,7 @@ namespace GatewayIntegracaoRDStation.WebAPI.Extensions
             services.AddSingleton<IValidator<PayloadConversionRequest>, PayloadConversionRequestValidator>();
             services.AddSingleton<IValidator<PostCartAbandonmentRequest>, PostCartAbandonmentRequestValidator>();
             services.AddSingleton<IValidator<PayloadCartAbandonmentRequest>, PayloadCartAbandonmentRequestValidator>();
+            services.AddSingleton<IValidator<LegalBasesRequest>, LegalBasesRequestValidator>();
 
             return services;
         }
