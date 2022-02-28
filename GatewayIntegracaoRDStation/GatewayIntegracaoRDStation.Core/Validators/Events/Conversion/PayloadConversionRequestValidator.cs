@@ -13,6 +13,9 @@ namespace GatewayIntegracaoRDStation.Core.Validators.Events.Conversion
             RuleFor(x => x.Email)
                 .NotNull().NotEmpty()
                 .EmailAddress();
+
+            RuleForEach(x => x.LegalBases)
+                .SetValidator(new LegalBasesRequestValidator());
         }
     }
 }
