@@ -9,12 +9,12 @@
             
             </summary>
         </member>
-        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.Conversion(GatewayIntegracaoRDStation.Core.ValueObjects.Events.Conversion.PostConversionRequest)">
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.Conversion(System.String,GatewayIntegracaoRDStation.Core.ValueObjects.Events.Conversion.PostConversionRequest)">
             <summary>
             Evento de conversão
             </summary>
         </member>
-        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.CartAbandonment(GatewayIntegracaoRDStation.Core.ValueObjects.Events.CartAbandonment.PostCartAbandonmentRequest)">
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.CartAbandonment(System.String,GatewayIntegracaoRDStation.Core.ValueObjects.Events.CartAbandonment.PostCartAbandonmentRequest)">
             <summary>
             Evento de abandono de carrinho
             </summary>
@@ -29,12 +29,12 @@
             
             </summary>
         </member>
-        <member name="T:GatewayIntegracaoRDStation.WebAPI.Extensions.ValidationBuilderExtensions">
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions.AddValidations(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             
             </summary>
         </member>
-        <member name="M:GatewayIntegracaoRDStation.WebAPI.Extensions.ValidationBuilderExtensions.AddValidation(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions.AddMyTelemetry(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             
             </summary>

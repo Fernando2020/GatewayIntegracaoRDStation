@@ -123,8 +123,8 @@
   <data name="OPERATION_SUCCESS" xml:space="preserve">
     <value>Operation performed successfully.</value>
   </data>
-  <data name="PARAMETER_ID_REQUIRED" xml:space="preserve">
-    <value>ID is required.</value>
+  <data name="PARAMETER_REQUIRED" xml:space="preserve">
+    <value>Parameter is required.</value>
   </data>
   <data name="RECORD_NOT_FOUND" xml:space="preserve">
     <value>Record not found.</value>

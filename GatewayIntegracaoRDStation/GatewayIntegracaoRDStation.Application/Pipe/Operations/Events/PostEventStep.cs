@@ -13,47 +13,54 @@ namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Events
 {
     public class PostEventStep : OperationBaseAsync
     {
-        public override async Task<IPipelineMessage> ExecuteAsync(IPipelineMessage input)
+        public override async Task ExecuteAsync(IPipelineMessage input)
         {
             if (!input.HasContent("urlBase"))
             {
-                NotificationContext.Add("PostEventMapperResponseStep", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
+                input.Messages.AddMessage("rdstation_urlBase", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
             }
 
             if (!input.HasContent("data"))
             {
-                NotificationContext.Add("PostEventMapperResponseStep", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
+                input.Messages.AddMessage("data", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
             }
 
             if (!input.HasContent("accessTokenResponse"))
             {
-                NotificationContext.Add("PostEventMapperResponseStep", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
+                input.Messages.AddMessage("accessTokenResponse", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
             }
 
-            if (NotificationContext.HasErrorNotifications)
+            if (input.IsFaulty)
             {
-                input.SetLock();
-                return input;
+                return;
             }
 
             var urlBase = input.GetContent<string>("urlBase");
             var data = input.GetContent<object>("data");
+
             var accessTokenResponse = input.GetContent<AccessTokenResponse>("accessTokenResponse");
 
             var header = new Hashtable(); header.Add("Authorization", $"Bearer {accessTokenResponse.AccessToken}");
 
-            var body = JsonConvert.SerializeObject(data);
+            var json = JsonConvert.SerializeObject(data, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
 
-            var response = await WebRequestHelper.PostAsync($"{urlBase}/platform/events", body, header);
+            var url = $"{urlBase}/platform/events";
+            var response = await WebRequestHelper.PostAsync(url, json, header);
+
+            var error = response.ToDeserialize<PostEventErrorResponse>();
+
+            if (error.Errors.AnyOrNotNull())
+            {
+                input.Messages.AddMessage("post_events", Messages.OPERATION_FAIL, Mvp24Hours.Core.Enums.MessageType.Error);
+                return;
+            }
 
             var result = response.ToDeserialize<PostEventResponse>();
 
-            if (result != null)
-            {
-                input.AddContent("postEventResponse", result);
-            }
-
-            return input;
+            input.AddContent("postEventResponse", result);
         }
     }
 }

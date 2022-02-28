@@ -13,8 +13,7 @@ namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Events
         {
             if (!input.HasContent("postEventResponse"))
             {
-                NotificationContext.Add("PostEventMapperResponseStep", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
-                input.SetLock();
+                input.Messages.AddMessage("postEventResponse", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
                 return await Task.FromResult<PostEventResponse>(default);
             }
 
