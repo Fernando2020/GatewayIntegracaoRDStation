@@ -37,7 +37,7 @@ namespace GatewayIntegracaoRDStation.WebAPI
             #region [ Mvp24Hours ]
             services.AddMvp24HoursWebEssential();
             services.AddMvp24HoursWebJson();
-            services.AddMvp24HoursWebSwagger("Customer Pipeline Builder API", xmlCommentsFileName: "GatewayIntegracaoRDStation.WebAPI.xml", enableExample: true);
+            services.AddMvp24HoursWebSwagger("Integration with RD Station API", xmlCommentsFileName: "GatewayIntegracaoRDStation.WebAPI.xml", enableExample: true);
             services.AddMvp24HoursWebGzip();
             services.AddMvp24HoursPipelineAsync();
             services.AddMvp24HoursCaching();
@@ -72,7 +72,7 @@ namespace GatewayIntegracaoRDStation.WebAPI
 
             if (!env.IsProduction())
             {
-                app.UseMvp24HoursSwagger("Customer Pipeline Builder API");
+                app.UseMvp24HoursSwagger("Integration with RD Station API");
             }
 
             app.UseMvp24Hours();
