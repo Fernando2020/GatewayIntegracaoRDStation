@@ -18,9 +18,5 @@ namespace GatewayIntegracaoRDStation.Core.ValueObjects.Authentication
         [JsonProperty("refresh_token")]
         [JsonPropertyName("refresh_token")]
         public string RefreshToken { get; set; }
-
-        [JsonProperty("errors")]
-        [JsonPropertyName("errors")]
-        public List<ErrorAuthResponse> Errors { get; set; }
     }
 }

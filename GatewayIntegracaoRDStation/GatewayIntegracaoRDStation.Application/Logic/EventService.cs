@@ -1,10 +1,8 @@
 ﻿using GatewayIntegracaoRDStation.Core.Contract.Logic;
 using GatewayIntegracaoRDStation.Core.Contract.Pipe.Builders;
-using GatewayIntegracaoRDStation.Core.Resources;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Events;
 using Mvp24Hours.Core.Contract.Infrastructure.Pipe;
 using Mvp24Hours.Core.Contract.ValueObjects.Logic;
-using Mvp24Hours.Core.Enums;
 using Mvp24Hours.Extensions;
 using Mvp24Hours.Helpers;
 using System.Threading.Tasks;
@@ -37,19 +35,24 @@ namespace GatewayIntegracaoRDStation.Application.Logic
             ServiceProviderHelper.GetService<IPostEventBuilder>()
                 ?.Builder(pipeline);
 
-            await pipeline.ExecuteAsync(postEventRequest.Data.ToMessage("data"));
+            var pipelineMessage = postEventRequest.Code.ToMessage("code");
+            
+            pipelineMessage.AddContent("data", postEventRequest.Data);
 
-            PostEventResponse result = pipeline.GetMessage()
-                .GetContent<PostEventResponse>();
+            await pipeline.ExecuteAsync(pipelineMessage);
 
-            if (result == null)
+            var message = pipeline.GetMessage();
+
+            if (message.IsFaulty)
             {
-                return Messages.RECORD_NOT_FOUND
-                    .ToMessageResult(MessageType.Error)
-                        .ToBusiness<PostEventResponse>();
+                return message
+                    .Messages
+                    .ToBusiness<PostEventResponse>();
             }
 
-            return result.ToBusiness();
+            return message
+                .GetContent<PostEventResponse>()
+                .ToBusiness();
         }
 
         #endregion

@@ -2,10 +2,12 @@
 {
     public class PostEventRequest<T>
     {
+        public string Code { get; set; }
         public T Data { get; set; }
 
-        public PostEventRequest(T data)
+        public PostEventRequest(string code, T data)
         {
+            Code = code;
             Data = data;
         }
     }
