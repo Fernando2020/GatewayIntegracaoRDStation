@@ -4,10 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace GatewayIntegracaoRDStation.Core.ValueObjects.Events
 {
-    public class PostEventResponse
+    public class PostEventErrorResponse
     {
-        [JsonProperty("event_uuid")]
-        [JsonPropertyName("event_uuid")]
-        public string EventId { get; set; }
+        [JsonProperty("errors")]
+        [JsonPropertyName("errors")]
+        public List<ErrorEventResponse> Errors { get; set; }
     }
 }
