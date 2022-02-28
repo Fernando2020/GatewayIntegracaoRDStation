@@ -4,29 +4,19 @@
         <name>GatewayIntegracaoRDStation.WebAPI</name>
     </assembly>
     <members>
-        <member name="T:GatewayIntegracaoRDStation.WebAPI.Controllers.CustomerController">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.CustomerController.GetBy(GatewayIntegracaoRDStation.Core.ValueObjects.Customers.GetByCustomerFilterRequest)">
-            <summary>
-            Get list of customers
-            </summary>
-        </member>
-        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.CustomerController.GetById(System.Int32)">
-            <summary>
-            Get customer with contact list
-            </summary>
-        </member>
         <member name="T:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController">
             <summary>
             
             </summary>
         </member>
-        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.EventPost(GatewayIntegracaoRDStation.Core.ValueObjects.Events.PostEventRequest)">
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.Conversion(System.String,GatewayIntegracaoRDStation.Core.ValueObjects.Events.Conversion.PostConversionRequest)">
             <summary>
-            Event
+            Evento de conversão
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Controllers.EventController.CartAbandonment(System.String,GatewayIntegracaoRDStation.Core.ValueObjects.Events.CartAbandonment.PostCartAbandonmentRequest)">
+            <summary>
+            Evento de abandono de carrinho
             </summary>
         </member>
         <member name="T:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions">
@@ -35,6 +25,16 @@
             </summary>
         </member>
         <member name="M:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions.AddMyServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions.AddValidations(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions.AddMyTelemetry(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             
             </summary>

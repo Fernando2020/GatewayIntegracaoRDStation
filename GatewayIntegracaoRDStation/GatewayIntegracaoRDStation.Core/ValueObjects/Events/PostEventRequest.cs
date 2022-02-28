@@ -1,16 +1,14 @@
-﻿using System.Text.Json.Serialization;
-
-namespace GatewayIntegracaoRDStation.Core.ValueObjects.Events
+﻿namespace GatewayIntegracaoRDStation.Core.ValueObjects.Events
 {
-    public class PostEventRequest
+    public class PostEventRequest<T>
     {
-        [JsonPropertyName("event_type")]
-        public string EventType { get; set; }
+        public string Code { get; set; }
+        public T Data { get; set; }
 
-        [JsonPropertyName("event_family")]
-        public string EventFamily { get; set; }
-
-        [JsonPropertyName("payload")]
-        public PayloadRequest PayloadRequest { get; set; }
+        public PostEventRequest(string code, T data)
+        {
+            Code = code;
+            Data = data;
+        }
     }
 }

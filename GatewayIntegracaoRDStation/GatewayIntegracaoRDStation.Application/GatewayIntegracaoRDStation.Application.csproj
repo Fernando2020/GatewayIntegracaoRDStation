@@ -6,16 +6,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Mvp24Hours.Application" Version="3.1.242" />
-		<PackageReference Include="Mvp24Hours.Infrastructure.Pipe" Version="3.1.242" />
+	  <Compile Remove="Pipe\Operations\Authentications\GetRefreshAccessTokenAuthStep.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Mvp24Hours.Application" Version="3.2.241" />
+		<PackageReference Include="Mvp24Hours.Infrastructure.Pipe" Version="3.2.241" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\GatewayIntegracaoRDStation.Core\GatewayIntegracaoRDStation.Core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Pipe\Operations\Events\" />
 	</ItemGroup>
 
 </Project>

@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using GatewayIntegracaoRDStation.WebAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,17 +35,21 @@ namespace GatewayIntegracaoRDStation.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             #region [ Mvp24Hours ]
-            services.AddMvp24HoursWebEssential(Configuration);
+            services.AddMvp24HoursWebEssential();
             services.AddMvp24HoursWebJson();
             services.AddMvp24HoursWebSwagger("Customer Pipeline Builder API", xmlCommentsFileName: "GatewayIntegracaoRDStation.WebAPI.xml", enableExample: true);
             services.AddMvp24HoursWebGzip();
             services.AddMvp24HoursPipelineAsync();
+            services.AddMvp24HoursCaching();
+            services.AddMvp24HoursCachingRedis(Configuration.GetConnectionString("RedisDbContext"));
             #endregion
 
+            services.AddMyTelemetry();
             services.AddMyServices();
+            services.AddValidations();
 
             services.AddControllers();
-            services.AddMvc();
+            services.AddMvc().AddFluentValidation();
         }
 
         /// <summary>
