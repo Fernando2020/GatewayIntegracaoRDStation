@@ -7,6 +7,7 @@ using Mvp24Hours.Extensions;
 using Mvp24Hours.Helpers;
 using Mvp24Hours.Infrastructure.Pipe.Operations;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,21 +21,27 @@ namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Authentications
             _cache = cache;
         }
 
-        private async Task<AccessTokenResponse> GetProviderAccessTokenResponseAsync(string code)
+        private async Task<string> GetAccessToken(string code)
         {
-            var credentials = await _cache.GetStringAsync(code);
-
-            if (credentials != null)
-            {
-                return JsonConvert.DeserializeObject<AccessTokenResponse>(credentials);
-            }
-
-            return default;
+            return await _cache.GetStringAsync($"access_token_{code}");
         }
 
-        private async Task SetProviderAccessTokenResponseAsync(string code, AccessTokenResponse obj)
+        private async Task<string> GetRefreshToken(string code)
         {
-            await _cache.SetStringAsync(code, JsonConvert.SerializeObject(obj));
+            return await _cache.GetStringAsync($"refresh_token_{code}");
+        }
+
+        private async Task SetCredentialsAsync(string code, AccessTokenResponse accessTokenResponse)
+        {
+            var expiresIn = TimeSpan.FromSeconds(accessTokenResponse.ExpiresIn * 0.99);
+
+            await _cache.SetStringAsync($"access_token_{code}", accessTokenResponse.AccessToken,
+                new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = expiresIn
+                });
+
+            await _cache.SetStringAsync($"refresh_token_{code}", accessTokenResponse.RefreshToken);
         }
 
         public override async Task ExecuteAsync(IPipelineMessage input)
@@ -59,39 +66,46 @@ namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Authentications
 
             var accessTokenRequest = dictionary[code];
 
-            var accessTokenResponse = await GetProviderAccessTokenResponseAsync(code);
+            var accessToken = await GetAccessToken(code);
 
-            if (accessTokenResponse != null)
+            if (!accessToken.HasValue())
             {
-                accessTokenRequest.RefreshToken = accessTokenResponse.RefreshToken;
+                var refreshToken = await GetRefreshToken(code);
+
+                if (refreshToken.HasValue())
+                {
+                    accessTokenRequest.RefreshToken = refreshToken;
+                }
+                else
+                {
+                    accessTokenRequest.Code = code;
+                }
+
+                var json = JsonConvert.SerializeObject(accessTokenRequest, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                var url = $"{urlBase}/auth/token";
+                var response = await WebRequestHelper.PostAsync(url, json);
+
+                var error = response.ToDeserialize<AccessTokenErrorResponse>();
+
+                if (error.Errors.AnyOrNotNull())
+                {
+                    input.Messages.AddMessage("rdstation_access_token", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
+                    return;
+                }
+
+                var result = response.ToDeserialize<AccessTokenResponse>();
+
+                await SetCredentialsAsync(code, result);
+
+                accessToken = result.AccessToken;
             }
-            else
-            {
-                accessTokenRequest.Code = code;
-            } 
-
-            var json = JsonConvert.SerializeObject(accessTokenRequest, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
-
-            var url = $"{urlBase}/auth/token";
-            var response = await WebRequestHelper.PostAsync(url, json);
-
-            var error = response.ToDeserialize<AccessTokenErrorResponse>();
-
-            if (error.Errors.AnyOrNotNull())
-            {
-                input.Messages.AddMessage("rdstation_access_token", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
-                return;
-            }
-
-            var result = response.ToDeserialize<AccessTokenResponse>();
 
             input.AddContent("urlBase", urlBase);
-            input.AddContent("accessTokenResponse", result);
-
-            await SetProviderAccessTokenResponseAsync(code, result);
+            input.AddContent("accessToken", accessToken);
         }
     }
 }
