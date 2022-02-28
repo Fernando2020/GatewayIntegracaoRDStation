@@ -1,75 +1,97 @@
-﻿using GatewayIntegracaoRDStation.Core.ValueObjects.Authentication;
+﻿using GatewayIntegracaoRDStation.Core.Resources;
+using GatewayIntegracaoRDStation.Core.ValueObjects.Authentication;
+using GatewayIntegracaoRDStation.Core.ValueObjects.Authentications;
+using Microsoft.Extensions.Caching.Distributed;
 using Mvp24Hours.Core.Contract.Infrastructure.Pipe;
 using Mvp24Hours.Extensions;
 using Mvp24Hours.Helpers;
 using Mvp24Hours.Infrastructure.Pipe.Operations;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Authentications
 {
     public class GetAccessTokenAuthStep : OperationBaseAsync
     {
-        private AccessTokenResponse ProviderAccessTokenResponse()
+        private readonly IDistributedCache _cache;
+        public GetAccessTokenAuthStep(IDistributedCache cache)
         {
-            // Banco de dados ?
-            return new AccessTokenResponse
-            {
-                AccessToken = "",
-                ExpiresIn = 86400,
-                RefreshToken = ""
-            };
+            _cache = cache;
         }
 
-        public override async Task<IPipelineMessage> ExecuteAsync(IPipelineMessage input)
+        private async Task<AccessTokenResponse> GetProviderAccessTokenResponseAsync(string code)
         {
-            var accessTokenResponse = ProviderAccessTokenResponse();
+            var credentials = await _cache.GetStringAsync(code);
 
-            var urlBase = ConfigurationHelper.GetSettings("RDStation:UrlBase");
-            var accessTokenRequest = ConfigurationHelper.GetSettings<AccessTokenRequest>("RDStation");
-
-            if (!urlBase.HasValue())
+            if (credentials != null)
             {
-                NotificationContext.Add("GetAccessTokenAuthStep", "Não foi encontrado a UrlBase do RDStation (appsettings).", Mvp24Hours.Core.Enums.MessageType.Error);
+                return JsonConvert.DeserializeObject<AccessTokenResponse>(credentials);
             }
 
-            if (!accessTokenRequest.ClientId.HasValue() || !accessTokenRequest.ClientSecret.HasValue())
+            return default;
+        }
+
+        private async Task SetProviderAccessTokenResponseAsync(string code, AccessTokenResponse obj)
+        {
+            await _cache.SetStringAsync(code, JsonConvert.SerializeObject(obj));
+        }
+
+        public override async Task ExecuteAsync(IPipelineMessage input)
+        {
+            if (!input.HasContent("code"))
             {
-                NotificationContext.Add("GetAccessTokenAuthStep", "Não foram encontradas as configurações do RDStation (appsettings).", Mvp24Hours.Core.Enums.MessageType.Error);
+                input.Messages.AddMessage("code", Messages.PARAMETER_REQUIRED, Mvp24Hours.Core.Enums.MessageType.Error);
+                return;
             }
 
-            if (NotificationContext.HasErrorNotifications)
+            var code = input.GetContent<string>("code");
+
+            var urlBase = ConfigurationHelper.GetSettings<string>("RDStation:UrlBase");
+            var dictionary = ConfigurationHelper
+                .GetSettings<Dictionary<string, AccessTokenRequest>>("RDStation:AppsConfiguration");
+
+            if (string.IsNullOrEmpty(urlBase) || dictionary == null || !dictionary.ContainsKey(code))
             {
-                input.SetLock();
-                return input;
+                input.Messages.AddMessage("rdstation_appsettings", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
+                return;
             }
+
+            var accessTokenRequest = dictionary[code];
+
+            var accessTokenResponse = await GetProviderAccessTokenResponseAsync(code);
 
             if (accessTokenResponse != null)
             {
-                accessTokenRequest.Code = null;
                 accessTokenRequest.RefreshToken = accessTokenResponse.RefreshToken;
             }
+            else
+            {
+                accessTokenRequest.Code = code;
+            } 
 
             var json = JsonConvert.SerializeObject(accessTokenRequest, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
 
-            var response = await WebRequestHelper.PostAsync($"{urlBase}/auth/token", json);
+            var url = $"{urlBase}/auth/token";
+            var response = await WebRequestHelper.PostAsync(url, json);
+
+            var error = response.ToDeserialize<AccessTokenErrorResponse>();
+
+            if (error.Errors.AnyOrNotNull())
+            {
+                input.Messages.AddMessage("rdstation_access_token", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
+                return;
+            }
 
             var result = response.ToDeserialize<AccessTokenResponse>();
-
-            if (result == null || result.Errors.Count > 0)
-            {
-                NotificationContext.Add("GetAccessTokenAuthStep", "Não foi possível obter o access_token do RDStation.", Mvp24Hours.Core.Enums.MessageType.Error);
-                input.SetLock();
-                return input;
-            }
 
             input.AddContent("urlBase", urlBase);
             input.AddContent("accessTokenResponse", result);
 
-            return input;
+            await SetProviderAccessTokenResponseAsync(code, result);
         }
     }
 }
