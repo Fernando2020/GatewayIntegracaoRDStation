@@ -66,6 +66,12 @@ namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Authentications
 
             var accessTokenRequest = dictionary[code];
 
+            if(!accessTokenRequest.ClientId.HasValue() || !accessTokenRequest.ClientSecret.HasValue())
+            {
+                input.Messages.AddMessage("rdstation_appsettings", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
+                return;
+            }
+
             var accessToken = await GetAccessToken(code);
 
             if (!accessToken.HasValue())
