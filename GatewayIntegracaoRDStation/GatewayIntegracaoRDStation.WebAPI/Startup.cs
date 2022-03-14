@@ -45,7 +45,7 @@ namespace GatewayIntegracaoRDStation.WebAPI
             #endregion
 
             services.AddMyTelemetry();
-            services.AddMyServices();
+            services.AddMyServices(Configuration);
             services.AddValidations();
 
             services.AddControllers();

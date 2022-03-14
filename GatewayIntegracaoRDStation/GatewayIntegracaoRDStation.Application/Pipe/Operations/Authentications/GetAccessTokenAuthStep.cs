@@ -2,6 +2,7 @@
 using GatewayIntegracaoRDStation.Core.ValueObjects.Authentication;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Authentications;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using Mvp24Hours.Core.Contract.Infrastructure.Pipe;
 using Mvp24Hours.Extensions;
 using Mvp24Hours.Helpers;
@@ -16,9 +17,11 @@ namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Authentications
     public class GetAccessTokenAuthStep : OperationBaseAsync
     {
         private readonly IDistributedCache _cache;
-        public GetAccessTokenAuthStep(IDistributedCache cache)
+        private readonly IConfiguration _configuration;
+        public GetAccessTokenAuthStep(IDistributedCache cache, IConfiguration configuration)
         {
             _cache = cache;
+            _configuration = configuration;
         }
 
         private async Task<string> GetAccessToken(string code)
@@ -54,17 +57,18 @@ namespace GatewayIntegracaoRDStation.Application.Pipe.Operations.Authentications
 
             var code = input.GetContent<string>("code");
 
-            var urlBase = ConfigurationHelper.GetSettings<string>("RDStation:UrlBase");
-            var dictionary = ConfigurationHelper
-                .GetSettings<Dictionary<string, AccessTokenRequest>>("RDStation:AppsConfiguration");
+            var urlBase = _configuration.GetValue<string>("RDStation:UrlBase");
+            var credentials = _configuration.GetSection("RDStation:AppsConfiguration")
+                .Get(typeof(Dictionary<string, AccessTokenRequest>)) 
+                as Dictionary<string, AccessTokenRequest>;
 
-            if (string.IsNullOrEmpty(urlBase) || dictionary == null || !dictionary.ContainsKey(code))
+            if (string.IsNullOrEmpty(urlBase) || credentials == null || !credentials.ContainsKey(code))
             {
                 input.Messages.AddMessage("rdstation_appsettings", Messages.RECORD_NOT_FOUND, Mvp24Hours.Core.Enums.MessageType.Error);
                 return;
             }
 
-            var accessTokenRequest = dictionary[code];
+            var accessTokenRequest = credentials[code];
 
             if(!accessTokenRequest.ClientId.HasValue() || !accessTokenRequest.ClientSecret.HasValue())
             {
