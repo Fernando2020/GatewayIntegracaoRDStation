@@ -24,7 +24,7 @@
             
             </summary>
         </member>
-        <member name="M:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions.AddMyServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+        <member name="M:GatewayIntegracaoRDStation.WebAPI.Extensions.ServiceBuilderExtensions.AddMyServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             
             </summary>

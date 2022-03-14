@@ -11,6 +11,7 @@ using GatewayIntegracaoRDStation.Core.ValueObjects.Events;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Events.CartAbandonment;
 using GatewayIntegracaoRDStation.Core.ValueObjects.Events.Conversion;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Mvp24Hours.Core.Enums.Infrastructure;
 using Mvp24Hours.Core.Extensions;
@@ -29,12 +30,12 @@ namespace GatewayIntegracaoRDStation.WebAPI.Extensions
         /// <summary>
         /// 
         /// </summary>
-        public static IServiceCollection AddMyServices(this IServiceCollection services)
+        public static IServiceCollection AddMyServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<GetAccessTokenAuthStep>(sp =>
             {
-                return new GetAccessTokenAuthStep(sp.GetRequiredService<IDistributedCache>());
+                return new GetAccessTokenAuthStep(sp.GetRequiredService<IDistributedCache>(), configuration);
             });
 
             // pipeline - builders
